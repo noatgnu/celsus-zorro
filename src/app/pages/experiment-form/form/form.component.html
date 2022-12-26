@@ -1,0 +1,23 @@
+<nz-content>
+  <nz-row>
+    <nz-col [nzSpan]="4">
+      <nz-steps [nzCurrent]="currentStep" nzDirection="vertical">
+        <nz-step nzTitle="Experiment Metadata" nzDescription="Provide basic metadata"></nz-step>
+        <nz-step nzTitle="Differential Analysis File" nzDescription="Upload differential analysis file"></nz-step>
+        <nz-step nzTitle="Raw Files" nzDescription="Upload raw file"></nz-step>
+        <nz-step nzTitle="Other Files" nzDescription="Upload other files"></nz-step>
+      </nz-steps>
+    </nz-col>
+    <nz-col [nzSpan]="20">
+      <div [ngSwitch]="currentStep">
+        <app-basic-experiment-info *ngSwitchCase="0" (complete)="progress($event)" (projectData)="handleProjectData($event)"></app-basic-experiment-info>
+        <app-upload-differential-analysis [projectData]="projectData" *ngSwitchCase="1" (complete)="progress($event)"></app-upload-differential-analysis>
+        <app-upload-raw *ngSwitchCase="2" (complete)="progress($event)"></app-upload-raw>
+        <app-upload-other *ngSwitchCase="3" (complete)="progress($event)"></app-upload-other>
+      </div>
+      <div *ngIf="projectData.id">
+        <a href="#/project-explorer/details/{{projectData.id}}">Your Project Link</a>
+      </div>
+    </nz-col>
+  </nz-row>
+</nz-content>

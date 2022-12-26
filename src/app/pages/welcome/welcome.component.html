@@ -1,0 +1,37 @@
+<nz-content>
+  <nz-page-header>
+    <nz-page-header-title>Database Overview</nz-page-header-title>
+    <nz-page-header-subtitle>Built for proteomics data</nz-page-header-subtitle>
+  </nz-page-header>
+  <nz-row nzJustify="center">
+    <nz-col>
+      <app-pie-chart [data]="pieChartData" [title]="'Project type overview'" [height]="300" [width]="600"></app-pie-chart>
+    </nz-col>
+    <nz-col>
+      <app-bar-chart [data]="averageUniqueProteinData" [title]="'Average unique protein detected'" [divName]="'averageUnique'" [height]="300" [width]="600"></app-bar-chart>
+    </nz-col>
+  </nz-row>
+
+  <form [formGroup]="form" nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSm]="3" [nzXs]="6">
+        Select distribution plot
+      </nz-form-label>
+      <nz-form-control [nzSm]="6" [nzXs]="16">
+        <nz-select nzMode="multiple" nzPlaceHolder="Please Select" formControlName="apiSelection">
+          <nz-option *ngFor="let i of dataType" [nzValue]="i.apiPath" [nzLabel]="i.label"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <nz-row nzJustify="center" *ngIf="form.value['apiSelection'].length > 0">
+    <ng-container *ngFor="let i of dataType">
+      <nz-col *ngIf="i.results.length > 0">
+        <app-bar-chart [data]="i.results" [title]="i.title" [divName]="i.divName" [height]="600" [width]="600"></app-bar-chart>
+      </nz-col>
+    </ng-container>
+  </nz-row>
+
+</nz-content>
+
+

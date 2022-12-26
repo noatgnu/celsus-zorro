@@ -1,0 +1,14 @@
+<nz-content>
+  <nz-row nzJustify="start">
+    <h4 nz-typography>Upload Other Files</h4>
+  </nz-row>
+  <nz-form-item>
+    <nz-form-label nzSpan="5" nzRequired>Upload file</nz-form-label>
+    <nz-form-control nzSpan="5">
+      <app-upload-data-multiple [projectID]="projectData.id" [fileType]="'O'" (fileData)="handleResponse($event)"></app-upload-data-multiple>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-row nzJustify="end" *ngIf="_externalTrigger === undefined">
+    <button nz-button nzType="primary" [disabled]="loading" (click)="done()">Submit</button>
+  </nz-row>
+</nz-content>

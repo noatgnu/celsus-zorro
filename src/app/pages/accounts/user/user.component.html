@@ -1,0 +1,42 @@
+<nz-row nzJustify="center">
+  <p>
+    <b>Username</b>: {{accounts.user_name}}<br>
+    <b>Staff</b>: {{accounts.user_staff}}
+  </p>
+</nz-row>
+
+<nz-table (nzQueryParams)="onQueryParamsChange($event)" [nzData]="projects.results" [nzLoading]="loading" [nzTotal]="projects.count" [nzPageSize]="20" [nzPageIndex]="pageIndex">
+  <thead>
+  <tr>
+    <th nzColumnKey="id">
+      id
+    </th>
+    <th nzColumnKey="title" >
+      Title
+    </th>
+    <th nzColumnKey="project_type" [nzFilters]="filterProject" [nzFilterFn]="true">
+      Project Type
+    </th>
+    <th nzColumnKey="date" [nzSortFn]="true">
+      Date
+    </th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let r of projects.results">
+    <td>
+      {{r.id}}
+    </td>
+    <td>
+      {{r.title}}
+    </td>
+    <td>
+      {{r.project_type}}
+    </td>
+    <td>
+      {{r.date}}
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

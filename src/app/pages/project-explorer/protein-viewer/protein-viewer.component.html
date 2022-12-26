@@ -1,0 +1,38 @@
+<nz-page-header [nzSubtitle]="uniprot['Entry Name']" *ngIf="uniprot !== undefined">
+  <nz-page-header-title>{{title}}</nz-page-header-title>
+  <nz-page-header-content>
+    <nz-descriptions nzSize="small" [nzColumn]="3">
+      <nz-descriptions-item *ngIf="uniprot.Entry" nzTitle="Primary Accession" [nzSpan]="1">{{uniprot.Entry}}</nz-descriptions-item>
+<!--      <nz-descriptions-item *ngIf="uniprot.secondaryAccessions" nzTitle="Secondary Accession" [nzSpan]="2">{{uniprot.secondaryAccessions.join(";")}}</nz-descriptions-item>-->
+      <nz-descriptions-item *ngIf="uniprot.Organism" nzTitle="Organism" [nzSpan]="1">{{uniprot.Organism}} ({{uniprot['Organism (ID)']}})</nz-descriptions-item>
+      <nz-descriptions-item *ngIf="uniprot['Protein names']" nzTitle="Protein Full Name" [nzSpan]="2"> {{uniprot['Protein names']}}</nz-descriptions-item>
+<!--      <nz-descriptions-item *ngIf="uniprot.proteinExistence" nzTitle="Uniprot Evidence" [nzSpan]="1"> {{uniprot.proteinExistence}}</nz-descriptions-item>-->
+      <nz-descriptions-item nzTitle="Selected Comparison" [nzSpan]="1"> {{comparison.name}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Project" [nzSpan]="1">
+        <a href="#/project-explorer/details/{{project.id}}" target="_blank">{{project.title}}</a>
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </nz-page-header-content>
+</nz-page-header>
+
+
+<ng-container *ngIf="data.results">
+  <nz-row>
+    <nz-col nzSpan="16">
+      <app-volcano-plotly *ngIf="data.results.length > 0" [data]="data.results" [allowSelection]="false" [parameters]="volcanoSettings"></app-volcano-plotly>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <app-volcano-plot-settings (output)="handleVolcanoSettings($event)"></app-volcano-plot-settings>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="12">
+      <app-bar-chart-simple [data]="daFCSorted" [title]="'Sorted Fold Change Distribution'" [divName]="'fcSorted'"></app-bar-chart-simple>
+    </nz-col>
+    <nz-col nzSpan="12">
+      <app-bar-chart-simple [data]="daSignificantSorted" [title]="'Sorted Significant Distribution'" [divName]="'significantSorted'"></app-bar-chart-simple>
+    </nz-col>
+  </nz-row>
+</ng-container>
+
+<app-bar-chart *ngIf="rawData.results" [data]="rawData.results" [title]="title"></app-bar-chart>

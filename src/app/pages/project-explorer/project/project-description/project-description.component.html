@@ -1,0 +1,34 @@
+<nz-list-item-meta>
+  <nz-list-item-meta-avatar [nzSrc]="'/assets/avatars/c3.png'"></nz-list-item-meta-avatar>
+  <nz-list-item-meta-title>
+    <a href="#/project-explorer/details/{{data.id}}" target="_blank" style="padding-right: 20px">
+      <span style="color: #7F669D" *ngIf="data.project_type === 'PTM'"><b>{{data.title}}</b><span> (PTM)</span></span>
+      <b *ngIf="data.project_type !== 'PTM'">{{data.title}}</b>
+    </a>
+  </nz-list-item-meta-title>
+  <nz-list-item-meta-description>
+    <nz-row>
+      <nz-col nzSpan="6">
+        <p>
+          <b>Authors:</b> {{authors.join(",")}}
+        </p>
+      </nz-col>
+      <nz-col nzSpan="6">
+        <p>
+          <b>Lab Groups:</b> {{labGroups.join(",")}}
+        </p>
+      </nz-col>
+    </nz-row>
+
+    <p><b>Description:</b></p>
+    <div [innerHTML]="data.description"></div>
+  </nz-list-item-meta-description>
+</nz-list-item-meta>
+<ul nz-list-item-actions>
+  <nz-list-item-action *ngIf="rawFile.raw_sample_columns.length > 0">
+    Sample #: <span nz-tooltip nzTooltipTitle="{{sampleTooltip}}">{{rawFile.raw_sample_columns.length}}</span>
+  </nz-list-item-action>
+  <nz-list-item-action>
+    Result Entry Row #: {{resultCount}}
+  </nz-list-item-action>
+</ul>

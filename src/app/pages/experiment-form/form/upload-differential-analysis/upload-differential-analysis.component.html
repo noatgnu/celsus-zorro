@@ -1,0 +1,131 @@
+<nz-content>
+  <nz-row nzJustify="start">
+    <h4 nz-typography>Differential Analysis Data</h4>
+  </nz-row>
+  <nz-form-item>
+    <nz-form-label nzSpan="5" nzRequired>Upload file</nz-form-label>
+    <nz-form-control nzSpan="5">
+      <app-upload-data [fileType]="'DA'" (fileData)="handleResponse($event)"></app-upload-data>
+    </nz-form-control>
+  </nz-form-item>
+
+  <form nz-form [formGroup]="form" (ngSubmit)="submitColumnData($event)">
+    <nz-form-item>
+      <nz-form-label nzFor="primaryIDs" nzSpan="5" nzRequired>Primary IDs</nz-form-label>
+      <nz-form-control nzSpan="10">
+        <nz-select nzPlaceHolder="please select column" nzId="primaryIDs" formControlName="primaryId">
+          <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <ng-container *ngIf="projectData.project_type === 'PTM'">
+      <nz-form-item>
+        <nz-form-label nzFor="accessionId" nzSpan="5" nzRequired>UniProt Accession IDs</nz-form-label>
+        <nz-form-control nzSpan="10">
+          <nz-select nzPlaceHolder="please select column" nzId="accessionId" formControlName="accessionId">
+            <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="probabilityScore" nzSpan="5" nzRequired>Probability Score IDs</nz-form-label>
+        <nz-form-control nzSpan="10">
+          <nz-select nzPlaceHolder="please select column" nzId="probabilityScore" formControlName="probabilityScore">
+            <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="sequenceWindow" nzSpan="5" nzRequired>Sequence Window</nz-form-label>
+        <nz-form-control nzSpan="10">
+          <nz-select nzPlaceHolder="please select column" nzId="sequenceWindow" formControlName="sequenceWindow">
+            <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="peptideSequence" nzSpan="5" nzRequired>Peptide Sequence</nz-form-label>
+        <nz-form-control nzSpan="10">
+          <nz-select nzPlaceHolder="please select column" nzId="peptideSequence" formControlName="peptideSequence">
+            <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="ptmPosition" nzSpan="5" nzRequired>PTM Position in Protein</nz-form-label>
+        <nz-form-control nzSpan="10">
+          <nz-select nzPlaceHolder="please select column" nzId="ptmPosition" formControlName="ptmPosition">
+            <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="ptmPositionInPeptide" nzSpan="5" nzRequired>PTM Position in Peptide</nz-form-label>
+        <nz-form-control nzSpan="10">
+          <nz-select nzPlaceHolder="please select column" nzId="ptmPositionInPeptide" formControlName="ptmPositionInPeptide">
+            <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-container>
+    <nz-form-item>
+      <nz-form-label nzFor="foldChange" nzSpan="5" nzRequired>log2 Fold Change</nz-form-label>
+      <nz-form-control  nzSpan="10">
+        <nz-select nzPlaceHolder="please select column(s)" nzMode="multiple" nzId="foldChange" formControlName="foldChange">
+          <nz-option  *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="significant" nzSpan="5" nzRequired>-log10(p-value)</nz-form-label>
+      <nz-form-control nzSpan="10">
+        <nz-select nzPlaceHolder="please select column(s)" nzMode="multiple" nzId="significant" formControlName="significant">
+          <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="form.value['foldChange'].length > 0">
+      <nz-table #pairing [nzShowPagination]="false" nzSize="small" [nzData]="form.value['foldChange']">
+        <thead>
+        <th>
+          Fold Change Col
+        </th>
+        <th>
+          Significant Col
+        </th>
+        <th>
+          Comparison name
+        </th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of pairing.data">
+          <td>{{p}}</td>
+          <td>
+            <nz-form-control>
+              <input
+                style="width: 80%; margin-right: 8px;"
+                nz-input
+                [nzAutocomplete]="auto"
+              />
+              <nz-autocomplete #auto>
+                <nz-auto-option (click)="pairSignificant(s, p)" *ngFor="let s of form.value['significant']" [nzLabel]="s" [nzValue]="s">{{s}}</nz-auto-option>
+              </nz-autocomplete>
+            </nz-form-control>
+          </td>
+          <td>
+            <nz-form-control>
+              <input nz-input type="text" placeholder="Comparison name" #comparisonName (change)="setComparisonName(comparisonName.value, p)">
+            </nz-form-control>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-form-item>
+    <nz-form-item nzJustify="end" *ngIf="_externalTrigger === undefined">
+      <button nz-button nzType="primary" (click)="complete.emit(true)">Skip</button>
+      <button nz-button nzType="primary" type="submit">Submit</button>
+    </nz-form-item>
+  </form>
+</nz-content>
+
+

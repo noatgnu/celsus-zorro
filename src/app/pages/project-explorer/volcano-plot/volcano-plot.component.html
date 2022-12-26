@@ -1,0 +1,50 @@
+<nz-row>
+  <nz-col nzSpan="16">
+    <div id="{{divName}}" [style]="{height: height+'px'}"></div>
+  </nz-col>
+  <nz-col nzSpan="8">
+    <h5 nz-typography>Volcano Plot Settings</h5>
+    <form [formGroup]="form" nz-form (ngSubmit)="updatePlot()">
+      <nz-form-item>
+        <nz-form-label nzFor="pCutoff" nzSpan="12">-log10(p-value) cut-off</nz-form-label>
+        <nz-form-control nzSpan="5">
+          <input nz-input id="pCutoff" type="number" formControlName="pCutoff">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="fcCutoff" nzSpan="12">log2(FC) cut-off</nz-form-label>
+        <nz-form-control nzSpan="5">
+          <input nz-input id="fcCutoff" type="number" formControlName="fcCutoff">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="minX" nzSpan="12">Min X axis value</nz-form-label>
+        <nz-form-control nzSpan="5">
+          <input nz-input id="minX" type="number" formControlName="minX">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="maxX" nzSpan="12">Max X axis value</nz-form-label>
+        <nz-form-control nzSpan="5">
+          <input nz-input id="maxX" type="number" formControlName="maxX">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="minY" nzSpan="12">Min Y axis value</nz-form-label>
+        <nz-form-control nzSpan="5">
+          <input nz-input id="minY" type="number" formControlName="minY">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="maxY" nzSpan="12">Max Y axis value</nz-form-label>
+        <nz-form-control nzSpan="5">
+          <input nz-input id="maxY" type="number" formControlName="maxY">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nzJustify="center">
+        <button nz-button nzType="primary" type="submit">Redraw plot</button>
+      </nz-form-item>
+    </form>
+  </nz-col>
+</nz-row>
+

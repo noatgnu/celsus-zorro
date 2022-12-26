@@ -1,0 +1,139 @@
+<nz-row nzJustify="start">
+  <h4 nz-typography>Experiment information</h4>
+</nz-row>
+
+<form nz-form [formGroup]="form" (ngSubmit)="submitBasicData()">
+  <nz-form-item>
+    <nz-form-label nzFor="title" [nzSm]="6" [nzXs]="24" nzRequired>Experiment Title</nz-form-label>
+    <nz-form-control [nzSm]="10" [nzXs]="24">
+      <input nz-input id="title" formControlName="title" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="projectType" [nzSm]="6" [nzXs]="24" nzRequired>Project Type</nz-form-label>
+    <nz-form-control [nzSm]="8" [nzXs]="24">
+      <nz-select formControlName="projectType" id="projectType">
+        <nz-option nzLabel="Total Proteomics" nzValue="TP"></nz-option>
+        <nz-option nzLabel="PTM Proteomics" nzValue="PTM"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="organism" [nzSm]="6" [nzXs]="24">Organisms</nz-form-label>
+    <nz-form-control [nzSm]="8" [nzXs]="24">
+      <input
+        nz-input id="organism"
+        formControlName="currentOrganism"
+        [nzAutocomplete]="auto"
+      />
+      <nz-autocomplete #auto>
+        <nz-auto-option (click)="addToList(org, 'organisms')" *ngFor="let org of organismResults" [nzLabel]="org.name + ' (' + org.id + ')'" [nzValue]="org">{{org.name}} ({{org.id}})</nz-auto-option>
+      </nz-autocomplete>
+      <div *ngIf="form.value['organisms'].length > 0" style="padding-top: 4px">
+        <nz-table [nzShowPagination]="false" nzSize="small" #organismTable [nzData]="form.value['organisms']">
+          <thead>
+          <tr>
+            <th nzWidth="20px"></th>
+            <th>
+              Taxon ID
+            </th>
+            <th>
+              Name
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let org of organismTable.data">
+            <td><span nz-icon nzType="minus-circle-o" (click)="removeFromList(org.id, 'organisms')"></span></td>
+            <td>{{org.id}}</td>
+            <td>{{org.name}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <ng-container></ng-container>
+  <nz-form-item *ngFor="let control of dataControlList">
+    <nz-form-label nzFor="{{control.control}}" [nzSm]="6" [nzXs]="24">{{control.label}}</nz-form-label>
+    <nz-form-control [nzSm]="10" [nzXs]="24">
+      <input
+        style="width: 80%; margin-right: 8px;"
+        nz-input id="{{control.control}}"
+        [formControlName]="control.current"
+        [nzAutocomplete]="auto"
+      />
+      <span
+        nz-icon
+        nzType="plus-circle-o"
+        class="icon-button"
+        (click)="addToList({name: form.value[control.current].slice()}, control.control)"
+      ></span>
+      <nz-autocomplete #auto>
+        <nz-auto-option (click)="addToList(org, control.control)" *ngFor="let org of control.results" [nzLabel]="org.name" [nzValue]="org">{{org.name}}</nz-auto-option>
+      </nz-autocomplete>
+      <div *ngIf="form.value[control.control].length > 0" style="padding-top: 4px">
+        <nz-table [nzShowPagination]="false" nzSize="small" [nzData]="form.value[control.control]">
+          <thead>
+          <tr>
+            <th nzWidth="20px"></th>
+            <th>
+              Name
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let org of form.value[control.control]">
+            <td><span nz-icon nzType="minus-circle-o" (click)="removeFromList(org.id, control.control, org.name)"></span></td>
+            <td>{{org.name}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="firstAuthors" [nzSm]="6" [nzXs]="24">
+      First Authors
+    </nz-form-label>
+    <nz-form-control [nzSm]="10" [nzXs]="24">
+      <nz-select nzMode="multiple" id="firstAuthors" formControlName="firstAuthors">
+        <nz-option [nzLabel]="a.name" [nzValue]="a" *ngFor="let a of form.value['authors']"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="sampleProcessingProtocol" [nzSm]="6" [nzXs]="24">
+      Sample Processing Protocol
+    </nz-form-label>
+    <nz-form-control [nzXs]="24">
+      <ckeditor [editor]="Editor" formControlName="sampleProcessingProtocol" id="sampleProcessingProtocol"></ckeditor>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="dataProcessingProtocol" [nzSm]="6" [nzXs]="24">
+      Data Processing Protocol
+    </nz-form-label>
+    <nz-form-control [nzXs]="24">
+      <ckeditor [editor]="Editor" formControlName="dataProcessingProtocol" id="dataProcessingProtocol"></ckeditor>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="description" [nzSm]="6" [nzXs]="24">
+      Description
+    </nz-form-label>
+    <nz-form-control [nzXs]="24">
+      <ckeditor [editor]="Editor" formControlName="description" id="description"></ckeditor>
+    </nz-form-control>
+  </nz-form-item>
+<!--  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24">
+      PTM Data
+    </nz-form-label>
+    <nz-form-control [nzXs]="24">
+      <label nz-checkbox formControlName="ptmData"></label>
+    </nz-form-control>
+  </nz-form-item>-->
+
+  <button nz-button nzType="primary" type="submit">Submit</button>
+</form>

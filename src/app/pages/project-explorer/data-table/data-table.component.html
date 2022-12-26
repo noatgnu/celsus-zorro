@@ -1,0 +1,73 @@
+<nz-list nzItemLayout="vertical" [nzLoading]="loading">
+  <nz-list-item *ngFor="let item of data">
+    <nz-list-item-meta>
+      <nz-list-item-meta-avatar *ngIf="item.ptm_data" [nzSrc]="'/assets/avatars/phosphorylation.png'"></nz-list-item-meta-avatar>
+      <nz-list-item-meta-avatar *ngIf="!item.ptm_data" [nzSrc]="'/assets/avatars/total_proteomics.png'"></nz-list-item-meta-avatar>
+      <nz-list-item-meta-title>
+        <a *ngIf="item.ptm_data" href="#/project-explorer/protein-viewer/{{item.gene_names.gene_names}}/{{item.comparison.id}}/{{item.id}}/1" target="_blank" style="padding-right: 20px"><span style="color: #7F669D"><b>{{item.primary_id}}</b><span> (PTM)</span></span></a>
+        <a *ngIf="!item.ptm_data" href="#/project-explorer/protein-viewer/{{item.gene_names.gene_names}}/{{item.comparison.id}}/{{item.id}}/0" target="_blank" style="padding-right: 20px"><b>{{item.primary_id}}</b></a>
+
+        <span style="color: rgb(76,143,0)" *ngIf="item.fold_change > 0; else foldChangeNegative">
+          <span nz-icon nzType="up" nzTheme="outline" style="margin-right: 8px;"></span>
+          log2(FC): {{item.fold_change}}
+        </span>
+        <ng-template #foldChangeNegative>
+          <span style="color: rgb(143,0,0)">
+            <span nz-icon nzType="down" nzTheme="outline" style="margin-right: 8px;"></span>
+            log2(FC): {{item.fold_change}}
+          </span>
+        </ng-template>
+        <span style="color: rgb(5,0,143)">
+          <span nz-icon nzType="exclamation" [nzTheme]="'outline'"></span>
+          -log10(P-value): {{item.significant}}
+        </span>
+      </nz-list-item-meta-title>
+      <nz-list-item-meta-description>
+        <nz-row nzJustify="start">
+          <nz-col nzSpan="6">
+            <p>
+              <span style="color: #554994">
+                <b>Gene name:</b>
+              </span>
+               {{item.gene_names.gene_names}}
+            </p>
+          </nz-col>
+          <nz-col nzSpan="6">
+            <p>
+              <span>
+                <b style="color: #554994">Comparison: </b> <span style="color: #FF9494"><b>{{item.comparison.name}}</b></span>
+              </span>
+            </p>
+          </nz-col>
+          <nz-col nzSpan="6" *ngIf="item.comparison.file.project">
+            <p>
+              <span>
+                <b style="color: #554994">Associated Project: </b> <a href="#/project-explorer/details/{{item.comparison.file.project.id}}" target="_blank"><b>{{item.comparison.file.project.title}}</b></a>
+              </span>
+            </p>
+          </nz-col>
+        </nz-row>
+        <ng-container *ngIf="item.ptm_data">
+          <nz-row nzJustify="start">
+            <nz-col nzSpan="6">
+              <p><span style="color: #7F669D"><b>Probability Score:</b></span> {{item.probability_score}}</p>
+            </nz-col>
+            <nz-col nzSpan="6">
+              <p><span style="color: #7F669D"><b>Peptide Sequence:</b></span> {{item.peptide_sequence}}</p>
+            </nz-col>
+            <nz-col nzSpan="6">
+              <p><span style="color: #7F669D"><b>PTM Position in Peptide:</b></span> {{item.ptm_position_in_peptide}}</p>
+            </nz-col>
+            <nz-col nzSpan="6">
+              <p><span style="color: #7F669D"><b>PTM Position in Protein:</b></span> {{item.ptm_position}}</p>
+            </nz-col>
+            <nz-col nzSpan="6">
+              <p><span style="color: #7F669D"><b>Sequence Window:</b></span> {{item.sequence_window}}</p>
+            </nz-col>
+
+          </nz-row>
+        </ng-container>
+      </nz-list-item-meta-description>
+    </nz-list-item-meta>
+  </nz-list-item>
+</nz-list>

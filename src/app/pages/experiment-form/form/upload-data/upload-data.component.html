@@ -1,0 +1,10 @@
+<nz-upload
+  [nzAction]="web.host + '/files'"
+  [nzCustomRequest]="web.submitDifferentialAnalysisFile"
+  (nzChange)="handleChange($event)"
+>
+  <button nz-button>
+    <span nz-icon nzType="upload"></span>
+    Click to Upload
+  </button>
+</nz-upload>

@@ -1,0 +1,6 @@
+<nz-pagination [nzShowTotal]="rangeTemplate" [nzPageSize]="20" (nzPageIndexChange)="changePage($event)" [nzPageIndex]="1" [nzTotal]="selectedData.count"></nz-pagination>
+<app-data-table [data]="selectedData"></app-data-table>
+<ng-template #rangeTemplate let-range="range" let-total>
+  {{ range[0] }}-{{ range[1] }} of {{ total }} items
+</ng-template>
+

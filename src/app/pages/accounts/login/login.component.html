@@ -1,0 +1,23 @@
+<nz-row nzJustify="center">
+  <h4 nz-typography>User Login Credentials</h4>
+</nz-row>
+<form nz-form [formGroup]="form" (submit)="submit()">
+  <nz-form-item>
+    <nz-form-label nzFor="username" [nzSm]="8" [nzXs]="24">Username</nz-form-label>
+    <nz-form-control [nzSm]="8" [nzXs]="24">
+      <input nz-input type="text" id="username" formControlName="username">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="password" [nzSm]="8" [nzXs]="24">
+      Password
+    </nz-form-label>
+    <nz-form-control [nzSm]="8" [nzXs]="24">
+      <input nz-input type="password" id="password" formControlName="password">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item nzJustify="center">
+    <a type="button" nz-button nzType="link" target="_blank" class="btn btn-sm btn-outline-secondary" id="orcidAuthButton" href="https://orcid.org/oauth/authorize?response_type=code&amp;redirect_uri=https://celsus.proteo.info/&amp;client_id={{orcid}}&amp;scope=openid"><img src="https://orcid.org/sites/default/files/images/orcid_24x24.png">Connect your ORCID iD</a>
+    <button nz-button type="submit" nzType="primary">Sign In</button>
+  </nz-form-item>
+</form>

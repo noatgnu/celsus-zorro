@@ -1,0 +1,44 @@
+<nz-page-header></nz-page-header>
+  <nz-page-header-title>Search</nz-page-header-title>
+  <nz-page-header-subtitle>{{query}}</nz-page-header-subtitle>
+  <nz-page-header-content>
+    <form [formGroup]="form" nz-form (ngSubmit)="refreshSearch()">
+      <nz-form-item>
+        <nz-form-label nzFor="ptmData" nzSpan="6">
+          Select for PTM and/or Total Proteomics
+        </nz-form-label>
+        <nz-form-control nzSpan="4">
+          <nz-select nzId="ptmData" formControlName="ptmData">
+            <nz-option [nzLabel]="'PTM and Total Proteomics'" [nzValue]="null"></nz-option>
+            <nz-option [nzLabel]="'PTM Proteomics'" [nzValue]="1"></nz-option>
+            <nz-option [nzLabel]="'Total Proteomics'" [nzValue]="0"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="significantCutoff" nzSpan="6">
+          -log10(p-value) Cutoff
+        </nz-form-label>
+        <nz-form-control nzSpan="2">
+          <input nz-input type="number" id="significantCutoff" formControlName="significantCutoff">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="fcCutoff" nzSpan="6">
+          Absolute log2(fold change) cutoff
+        </nz-form-label>
+        <nz-form-control nzSpan="2">
+          <input nz-input type="number" id="fcCutoff" formControlName="fcCutoff">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <button type="submit" nzType="primary" nz-button>Refresh</button>
+      </nz-form-item>
+    </form>
+  </nz-page-header-content>
+<hr>
+<nz-pagination [nzShowTotal]="rangeTemplate" [nzPageSize]="20" (nzPageIndexChange)="changePage($event)" [nzPageIndex]="1" [nzTotal]="data.count"></nz-pagination>
+<app-data-table [data]="data"></app-data-table>
+<ng-template #rangeTemplate let-range="range" let-total>
+  {{ range[0] }}-{{ range[1] }} of {{ total }} items
+</ng-template>

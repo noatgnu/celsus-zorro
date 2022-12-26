@@ -1,0 +1,300 @@
+<nz-content *ngIf="project.id">
+  <nz-row nzJustify="center">
+    <h1 nz-typography>{{project.title}}</h1>
+    <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small">
+      <span nz-icon nzType="edit" (click)="openModal('title')"></span>
+    </button>
+    <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small">
+      <span nz-icon nzType="setting" nzTheme="outline" (click)="openProjectSetings()"></span>
+    </button>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="24" *ngIf="accounts.loggedIn">
+      <form [formGroup]="form">
+        <nz-form-item>
+          <label nz-checkbox formControlName="enable">Visibility to public</label>
+        </nz-form-item>
+      </form>
+
+    </nz-col>
+    <nz-col nzSpan="24">
+      <p>
+        <b>Description</b>
+        <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small">
+          <span nz-icon nzType="edit" (click)="openModal('description')"></span>
+        </button>
+      </p>
+      <div [innerHTML]="project['description']"></div>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="24">
+      <p>
+        <b>Sample Processing Protocol</b>
+        <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small"  (click)="openModal('sample_processing_protocol')">
+        <span nz-icon nzType="edit"></span>
+      </button>
+      </p>
+      <div [innerHTML]="project['sample_processing_protocol']"></div>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="24">
+      <p>
+        <b>Data Processing Protocol</b><button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small"  (click)="openModal('data_processing_protocol')">
+        <span nz-icon nzType="edit"></span>
+      </button>
+      </p>
+      <div [innerHTML]="project['data_processing_protocol']"></div>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <ng-container *ngFor="let p of listProperties">
+      <nz-col nzSpan="5">
+        <b>{{p.label}}</b><button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small" (click)="openModal(p.control)">
+        <span nz-icon nzType="edit"></span>
+        </button>
+        <ul>
+          <li *ngFor="let v of form.value[p.control]">
+            {{v.name}}
+          </li>
+        </ul>
+      </nz-col>
+    </ng-container>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="24">
+      <b>Files</b>
+      <ul>
+        <li *ngIf="daFile !== undefined; else addDAFile">
+          <a href="{{daFile['file']}}" target="_blank">{{daFile['file']}} (Differential analysis file)</a>
+          <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small" (click)="openModal('files'+daFile['file_type'])">
+            <span nz-icon nzType="edit"></span>
+          </button>
+        </li>
+        <ng-template #addDAFile>
+          <li>
+            <button nz-button nzType="text" nzSize="small" (click)="openModal('filesDA')">
+              Add Differential Analysis File
+              <span nz-icon nzType="edit"></span>
+            </button>
+          </li>
+
+        </ng-template>
+        <li *ngIf="rawFile !== undefined; else addRAWFile">
+          <a href="{{rawFile['file']}}" target="_blank">{{rawFile['file']}} (Raw file)</a>
+          <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small" (click)="openModal('files'+rawFile['file_type'])">
+            <span nz-icon nzType="edit"></span>
+          </button>
+        </li>
+        <ng-template #addRAWFile>
+          <li>
+            <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small" (click)="openModal('filesR')">
+              Add Raw File
+              <span nz-icon nzType="edit"></span>
+            </button>
+          </li>
+        </ng-template>
+        <ng-container *ngIf="otherFiles.length > 0">
+          <li *ngFor="let f of otherFiles">
+            <a href="{{f['file']}}" target="_blank">{{f['file']}} (Other file)</a>
+            <button *ngIf="accounts.loggedIn" nz-button nzType="text" nzSize="small" (click)="deleteFile(f.id)">
+              <span nz-icon nzType="delete"></span>
+            </button>
+          </li>
+        </ng-container>
+        <li *ngIf="accounts.loggedIn">
+          <button nz-button nzType="text" nzSize="small" (click)="openModal('filesO')">
+            Add Other Files
+            <span nz-icon nzType="edit"></span>
+          </button>
+        </li>
+      </ul>
+    </nz-col>
+  </nz-row>
+  <ng-container *ngIf="projectSettings.data.profile_plot">
+    <nz-divider></nz-divider>
+    <nz-row *ngIf="boxPlotData.length > 0">
+      <nz-col nzSpan="16">
+        <app-boxplot *ngIf="boxPlotData.length > 0" [data]="boxPlotData" [lineChartData]="boxPlotLineChart"></app-boxplot>
+      </nz-col>
+      <nz-col nzSpan="8">
+        <b>Profile Plot Additional Data Selection</b>
+        <app-quick-search [parameters]="{project: project.id}" (selected)="handleBoxPlotSelection($event)"></app-quick-search>
+        <button nz-button nzType="primary" (click)="clearBoxplotLineChart()">Clear Selected</button>
+        <!--<form [formGroup]="boxPlotForm" nz-form>
+          <ng-container *ngFor="let control of boxPlotControl">
+            <nz-form-item>
+              <nz-form-label nzFor="{{control.control}}" [nzSm]="8" [nzXs]="24">{{control.label}}</nz-form-label>
+              <nz-form-control [nzSm]="10" [nzXs]="24">
+                <input
+                  style="width: 80%; margin-right: 8px;"
+                  nz-input id="{{control.control}}"
+                  [formControlName]="control.current"
+                  [nzAutocomplete]="autobox"
+                />
+                <nz-autocomplete #autobox>
+                  <nz-auto-option (click)="getBoxplotValue(control.control, org)" *ngFor="let org of control.results" [nzLabel]="org[control.control]" [nzValue]="org">{{org[control.control]}}</nz-auto-option>
+                </nz-autocomplete>
+              </nz-form-control>
+            </nz-form-item>
+          </ng-container>
+          <nz-form-item nzJustify="center">
+            <button nz-button nzType="primary" (click)="clearBoxplotLineChart()">Clear Selected</button>
+          </nz-form-item>
+        </form>-->
+      </nz-col>
+    </nz-row>
+  </ng-container>
+  <ng-container *ngIf="projectSettings.data.volcano_plot">
+    <nz-divider></nz-divider>
+    <!--  <app-volcano-plot *ngIf="allDAData.length > 0" [data]="allDAData" (selected)="handleVolcanoSelection($event)"></app-volcano-plot>-->
+    <form [formGroup]="form" nz-form>
+      <nz-form-item>
+        <nz-form-label nzFor="comparisons" nzSpan="5" nzRequired>
+          Select comparisons
+        </nz-form-label>
+        <nz-form-control nzSpan="5">
+          <nz-select nzMode="multiple" formControlName="comparisons">
+            <nz-option [nzLabel]="c.name" [nzValue]="c" *ngFor="let c of comparisons"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <nz-row>
+      <nz-col nzSpan="16">
+        <app-volcano-plotly *ngIf="allDAData.length > 0" [data]="allDAData" [externalSelection]="volcanoSelection" (selected)="handleVolcanoSelection($event)" [allowSelection]="true" [parameters]="volcanoSettings"></app-volcano-plotly>
+      </nz-col>
+      <nz-col nzSpan="8">
+        <app-volcano-plot-settings (output)="handleVolcanoSettings($event)"></app-volcano-plot-settings>
+        <app-quick-search [parameters]="{project: this.project.id}" (selected)="handleVolcanoSearch($event)"></app-quick-search>
+      </nz-col>
+    </nz-row>
+    <nz-divider></nz-divider>
+    <nz-pagination [nzShowTotal]="rangeTemplate" [nzPageSize]="20" (nzPageIndexChange)="changePage($event)" [nzPageIndex]="1" [nzTotal]="data.count"></nz-pagination>
+    <app-data-table [data]="data"></app-data-table>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
+  </ng-container>
+</nz-content>
+
+
+
+
+<nz-modal [nzWidth]="1000" [(nzVisible)]="modalVisible" nzTitle="Project Data Editor" (nzOnCancel)="closeModal()" (nzOnOk)="processOK()">
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" nz-form *ngIf="project.id">
+      <ng-container [ngSwitch]="currentEdit">
+        <ng-container *ngSwitchCase="'filesDA'">
+          <app-upload-differential-analysis [projectData]="project" [externalTrigger]="fileDAUpdateTrigger" (complete)="updateFinish($event)"></app-upload-differential-analysis>
+        </ng-container>
+        <ng-container *ngSwitchCase="'filesR'">
+          <app-upload-raw [projectData]="project" [externalTrigger]="fileRAWUpdateTrigger" (complete)="updateFinish($event)"></app-upload-raw>
+        </ng-container>
+        <ng-container *ngSwitchCase="'filesO'">
+          <app-upload-other [projectData]="project" [externalTrigger]="fileOtherUpdateTrigger"></app-upload-other>
+        </ng-container>
+        <ng-container *ngSwitchCase="'title'">
+          <nz-form-item>
+            <nz-form-label nzSpan="5">
+              Title
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input type="text" formControlName="title">
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+        <ng-container *ngSwitchCase="'sample_processing_protocol'">
+          <nz-form-item>
+            <nz-form-label nzFor="sampleProcessingProtocol">
+              Sample Processing Protocol
+            </nz-form-label>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <ckeditor [editor]="Editor" formControlName="sample_processing_protocol" id="sampleProcessingProtocol"></ckeditor>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+        <ng-container *ngSwitchCase="'data_processing_protocol'">
+          <nz-form-item>
+            <nz-form-label nzFor="dataProcessingProtocol">
+              Data Processing Protocol
+            </nz-form-label>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <ckeditor [editor]="Editor" formControlName="data_processing_protocol" id="dataProcessingProtocol"></ckeditor>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+        <ng-container *ngSwitchCase="'description'">
+          <nz-form-item>
+            <nz-form-label nzFor="description">
+              Description
+            </nz-form-label>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <ckeditor [editor]="Editor" formControlName="description" id="description"></ckeditor>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <nz-form-item>
+            <nz-form-label nzFor="{{currentControl.control}}" [nzSm]="6" [nzXs]="24">{{currentControl.label}}</nz-form-label>
+            <nz-form-control [nzSm]="10" [nzXs]="24">
+              <input
+                style="width: 80%; margin-right: 8px;"
+                nz-input id="{{currentControl.control}}"
+                [formControlName]="currentControl.current"
+                [nzAutocomplete]="auto"
+              />
+              <span
+                nz-icon
+                nzType="plus-circle-o"
+                class="icon-button"
+                (click)="addToList({name: form.value[currentControl.current].slice()}, currentControl.control)"
+              ></span>
+              <nz-autocomplete #auto>
+                <nz-auto-option (click)="addToList(org, currentControl.control)" *ngFor="let org of currentControl.results" [nzLabel]="org.name" [nzValue]="org">{{org.name}}</nz-auto-option>
+              </nz-autocomplete>
+              <div *ngIf="form.value[currentControl.control].length > 0" style="padding-top: 4px">
+                <nz-table [nzShowPagination]="false" nzSize="small" [nzData]="form.value[currentControl.control]">
+                  <thead>
+                  <tr>
+                    <th nzWidth="20px"></th>
+                    <th>
+                      Name
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let org of form.value[currentControl.control]">
+                    <td><span nz-icon nzType="minus-circle-o" (click)="removeFromList(org.id, currentControl.control, org.name)"></span></td>
+                    <td>{{org.name}}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+      </ng-container>
+    </form>
+  </ng-container>
+</nz-modal>
+
+<nz-modal [nzWidth]="1000" [(nzVisible)]="projectSettingsVisible" nzTitle="Project Settings" (nzOnCancel)="closeModal()" (nzOnOk)="updateProjectSettings()">
+  <ng-container *nzModalContent>
+    <form [formGroup]="projectSettingsForm" nz-form>
+      <nz-form-item>
+        <label nz-checkbox formControlName="profile_plot">Profile Plot Visibility</label>
+      </nz-form-item>
+      <nz-form-item>
+        <label nz-checkbox formControlName="volcano_plot">Volcano Plot Visibility</label>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

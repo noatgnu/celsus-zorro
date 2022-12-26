@@ -1,0 +1,18 @@
+<form [formGroup]="form" nz-form>
+  <ng-container *ngFor="let control of control">
+    <nz-form-item>
+      <nz-form-label nzFor="{{control.control}}" [nzSm]="8" [nzXs]="24">{{control.label}}</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input
+          style="width: 80%; margin-right: 8px;"
+          nz-input id="{{control.control}}"
+          [formControlName]="control.current"
+          [nzAutocomplete]="autobox"
+        />
+        <nz-autocomplete #autobox>
+          <nz-auto-option (click)="selected.emit({control: control.control, obj: org})" *ngFor="let org of control.results" [nzLabel]="org[control.control]" [nzValue]="org">{{org[control.control]}}</nz-auto-option>
+        </nz-autocomplete>
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+</form>

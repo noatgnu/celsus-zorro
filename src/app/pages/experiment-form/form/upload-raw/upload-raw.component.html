@@ -1,0 +1,44 @@
+<nz-content>
+  <nz-row nzJustify="start">
+    <h4 nz-typography>Raw Intensity Data</h4>
+  </nz-row>
+  <nz-form-item>
+    <nz-form-label nzSpan="5" nzRequired>Upload file</nz-form-label>
+    <nz-form-control nzSpan="5">
+      <app-upload-data [fileType]="'R'" (fileData)="handleResponse($event)"></app-upload-data>
+    </nz-form-control>
+  </nz-form-item>
+  <form nz-form [formGroup]="form" (ngSubmit)="submitData()">
+    <nz-form-item>
+      <nz-form-label nzFor="primaryIDs" nzSpan="5" nzRequired>Primary IDs</nz-form-label>
+      <nz-form-control nzSpan="10">
+        <nz-select nzPlaceHolder="please select column" nzId="primaryIDs" formControlName="primaryId">
+          <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="accessionIDs" nzSpan="5" nzRequired>Accession IDs</nz-form-label>
+      <nz-form-control nzSpan="10">
+        <nz-select nzPlaceHolder="please select column" nzId="accessionIDs" formControlName="accessionId">
+          <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+        </nz-select>
+        <p>
+          <small>Select if there are no UniProt accession IDs in Primary IDs</small>
+        </p>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="sampleColumns" nzSpan="5" nzRequired>Sample Columns</nz-form-label>
+      <nz-form-control nzSpan="10">
+        <nz-select nzMode="multiple" nzPlaceHolder="please select column" nzId="sampleColumns" formControlName="samples">
+          <nz-option *ngFor="let c of columns" [nzLabel]="c" [nzValue]="c"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nzJustify="end" *ngIf="_externalTrigger === undefined">
+      <button nz-button nzType="primary" (click)="complete.emit(true)">Skip</button>
+      <button nz-button nzType="primary" type="submit">Submit</button>
+    </nz-form-item>
+  </form>
+</nz-content>

@@ -1,0 +1,35 @@
+<nz-page-header [nzSubtitle]="subtitle">
+  <nz-page-header-title>Project Explorer</nz-page-header-title>
+</nz-page-header>
+<form [formGroup]="form" nz-form (submit)="submitSearch($event)">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="term">
+      Search query
+    </nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="term" id="term">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <label nz-checkbox formControlName="title">Title</label>
+    <label nz-checkbox formControlName="description">Description</label>
+    <label nz-checkbox formControlName="keyword">Keywords</label>
+    <label nz-checkbox formControlName="quantification_method">Quantification Methods</label>
+    <label nz-checkbox formControlName="organism">Organisms</label>
+    <label nz-checkbox formControlName="associated_authors">Author</label>
+    <label nz-checkbox formControlName="accession_id">UniProt Accession IDs</label>
+    <label nz-checkbox formControlName="gene_names">Gene names</label>
+    <label nz-checkbox formControlName="lab_group">Lab Group</label>
+  </nz-form-item>
+  <nz-form-item nzJustify="end">
+    <button nz-button type="submit" nzType="default">Search</button>
+  </nz-form-item>
+</form>
+<nz-divider></nz-divider>
+<nz-pagination [nzShowTotal]="rangeTemplate" [nzPageSize]="20" (nzPageIndexChange)="changePage($event)" [nzPageIndex]="1" [nzTotal]="projectData.count"></nz-pagination>
+<app-project-table [data]="projectData"></app-project-table>
+<nz-pagination [nzShowTotal]="rangeTemplate" [nzPageSize]="20" (nzPageIndexChange)="changePage($event)" [nzPageIndex]="1" [nzTotal]="projectData.count"></nz-pagination>
+<ng-template #rangeTemplate let-range="range" let-total>
+  {{ range[0] }}-{{ range[1] }} of {{ total }} items
+</ng-template>
+
