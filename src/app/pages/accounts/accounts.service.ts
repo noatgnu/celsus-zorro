@@ -159,6 +159,7 @@ export class AccountsService {
     this._refreshToken = ""
     this._loggedIn = false
     this._is_owner = false
+    this._user_staff = false
     return this.http.post(this.host + "logout/", {refresh_token}, {responseType: "json", observe: "body", headers})
   }
 
@@ -168,6 +169,7 @@ export class AccountsService {
     localStorage.removeItem("accessToken")
     localStorage.removeItem("refreshToken")
     localStorage.removeItem("userName")
+    localStorage.removeItem("userStaff")
     localStorage.removeItem("userId")
     console.log("Storage data cleared.")
   }
