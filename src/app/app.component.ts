@@ -37,24 +37,6 @@ export class AppComponent {
   }
 
   testInit() {
-    if (this.accounts.accessToken === "" && this.accounts.refreshToken === "") {
-      this.accounts.login("admin", "alessilab") //testbranch
-        .subscribe((data: any) => {
-          this.accounts.accessToken = data.access
-          this.accounts.refreshToken = data.refresh
-          this.accounts.loggedIn = true
-          this.accounts.lastTokenUpdateTime = new Date()
-          this.accounts.lastRefreshTokenUpdateTime = new Date()
-          this.web.getUserData().subscribe((data: any) => {
-            this.accounts.user_id = data.id
-            this.accounts.user_name = data.username
-            this.accounts.user_staff = data.is_staff
-          })
-          this.initialLoginProcess = true
-        })
-    } else {
-      this.accounts.loggedIn = true
-      this.initialLoginProcess = true
-    }
+
   }
 }
