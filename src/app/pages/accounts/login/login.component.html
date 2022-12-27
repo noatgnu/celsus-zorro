@@ -17,7 +17,7 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item nzJustify="center">
-    <a type="button" nz-button nzType="link" target="_blank" class="btn btn-sm btn-outline-secondary" id="orcidAuthButton" href="https://orcid.org/oauth/authorize?response_type=code&amp;redirect_uri=https://celsus.proteo.info/&amp;client_id={{orcid}}&amp;scope=openid"><img src="https://orcid.org/sites/default/files/images/orcid_24x24.png">Connect your ORCID iD</a>
+    <a *ngIf="allowOrcid" type="button" nz-button nzType="link" target="_blank" class="btn btn-sm btn-outline-secondary" id="orcidAuthButton" href="https://orcid.org/oauth/authorize?response_type=code&amp;redirect_uri=https://celsus.proteo.info/&amp;client_id={{orcid}}&amp;scope=openid"><img src="https://orcid.org/sites/default/files/images/orcid_24x24.png">Connect your ORCID iD</a>
     <button nz-button type="submit" nzType="primary">Sign In</button>
   </nz-form-item>
 </form>

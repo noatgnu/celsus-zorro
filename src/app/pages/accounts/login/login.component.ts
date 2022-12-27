@@ -9,6 +9,7 @@ import {AccountsService} from "../accounts.service";
   styleUrls: ['./login.component.less']
 })
 export class LoginComponent implements OnInit {
+  allowOrcid = false
   orcid = environment.orcid
 
   form = this.fb.group({
