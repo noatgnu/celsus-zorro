@@ -52,21 +52,21 @@ export class BasicExperimentInfoComponent implements OnInit, AfterViewInit {
   })
 
   dataControlList: any[] = [
-    {current: "currentOrganismPart", control: "organismParts", results: [], apiPath: "/organism_parts", label: "Organism Parts"},
-    {current: "currentTissueType", control: "tissueTypes", results: [], apiPath: "/tissue_types", label: "Tissue types"},
-    {current: "currentCellType", control: "cellTypes", results: [], apiPath: "/cell_types", label: "Cell types"},
-    {current: "currentExperimentType", control: "experimentTypes", results: [], apiPath: "/experiment_types", label: "Experiment types"},
-    {current: "currentQuantificationMethod", control: "quantificationMethods", results: [], apiPath: "/quantification_methods", label: "Quantification methods"},
-    {current: "currentKeyword", control: "keywords", results: [], apiPath: "/keywords", label: "Keyword"},
-    {current: "currentInstrument", control: "instruments", results: [], apiPath: "/instruments", label: "Instruments"},
-    {current: "currentDisease", control: "diseases", results: [], apiPath: "/diseases", label: "Diseases"},
-    {current: "currentAuthors", control: "authors", results: [], apiPath: "/authors", label: "Authors"},
-    {current: "currentLabGroup", control: "labGroups", results: [], apiPath: "/lab_groups", label: "Lab Groups"},
+    {current: "currentOrganismPart", control: "organismParts", results: [], apiPath: "organism_parts", label: "Organism Parts"},
+    {current: "currentTissueType", control: "tissueTypes", results: [], apiPath: "tissue_types", label: "Tissue types"},
+    {current: "currentCellType", control: "cellTypes", results: [], apiPath: "cell_types", label: "Cell types"},
+    {current: "currentExperimentType", control: "experimentTypes", results: [], apiPath: "experiment_types", label: "Experiment types"},
+    {current: "currentQuantificationMethod", control: "quantificationMethods", results: [], apiPath: "quantification_methods", label: "Quantification methods"},
+    {current: "currentKeyword", control: "keywords", results: [], apiPath: "keywords", label: "Keyword"},
+    {current: "currentInstrument", control: "instruments", results: [], apiPath: "instruments", label: "Instruments"},
+    {current: "currentDisease", control: "diseases", results: [], apiPath: "diseases", label: "Diseases"},
+    {current: "currentAuthors", control: "authors", results: [], apiPath: "authors", label: "Authors"},
+    {current: "currentLabGroup", control: "labGroups", results: [], apiPath: "lab_groups", label: "Lab Groups"},
   ]
 
   organismResults: any[] = []
 
-  organismAutocomplete: AutocompleteDatabase = new AutocompleteDatabase("organism", this.web, this.form.controls["currentOrganism"].valueChanges, "/organisms")
+  organismAutocomplete: AutocompleteDatabase = new AutocompleteDatabase("organism", this.web, this.form.controls["currentOrganism"].valueChanges, "organisms")
 
   constructor(private fb: FormBuilder, private web: WebService, private data: DataService) {
     for (let i = 0; i < this.dataControlList.length; i ++) {

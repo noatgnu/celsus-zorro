@@ -54,8 +54,8 @@ export class QuickSearchComponent implements OnInit {
   })
 
   control: any[] = [
-    {current: "current_accession_id", control: "accession_id", label:"Accession IDs",  results: [], apiPath: "/genenamemap", parameterName:  "accession_id"},
-    {current: "current_gene_names", control: "gene_names", label:"Gene Names",  results: [], apiPath: "/genenamemap", parameterName: "gene_names"},
+    {current: "current_accession_id", control: "accession_id", label:"Accession IDs",  results: [], apiPath: "genenamemap", parameterName:  "accession_id"},
+    {current: "current_gene_names", control: "gene_names", label:"Gene Names",  results: [], apiPath: "genenamemap", parameterName: "gene_names"},
     //{current: "current_primary_id", control: "primary_id", label: "Primary IDs", results: [], apiPath: "/raw_data", parameterName: "primary_id"}
   ]
   constructor(private fb: FormBuilder, private web: WebService) {

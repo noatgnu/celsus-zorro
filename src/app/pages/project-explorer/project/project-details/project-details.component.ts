@@ -79,17 +79,17 @@ export class ProjectDetailsComponent implements OnInit {
     enable: [false, Validators.required]
   })
   listProperties: any[] = [
-    {current: "current_organism", control: "organism", label:"Organisms",  results: [], apiPath: "/organisms",},
-    {current: "current_organism_part", control: "organism_part", label:"Organism Parts",  results: [], apiPath: "/organism_parts"},
-    {current: "current_cell_type", control: "cell_type", label:  "Cell Types", results: [], apiPath: "/cell_types"},
-    {current: "current_tissue_type", control: "tissue_type", label: "Tissue Types", results: [], apiPath: "/tissue_types",},
-    {current: "current_disease", control: "disease", label: "Diseases", results: [], apiPath: "/diseases",},
-    {current: "current_instrument", control: "instrument", label: "Instruments", results: [], apiPath: "/instruments",},
-    {current: "current_quantification_method", control: "quantification_method", label: "Quantification Methods", results: [], apiPath: "/quantification_methods"},
-    {current: "current_experiment_type", control: "experiment_type", label: "Experiment Types", results: [], apiPath: "/experiment_types"},
-    {current: "current_keyword", control: "keyword", label: "Keywords", results: [], apiPath: "/keywords"},
-    {current: "current_associated_authors", control: "associated_authors", label: "Authors", results: [], apiPath: "/authors"},
-    {current: "current_lab_group", control: "lab_group", label: "Lab Groups", results: [], apiPath: "/lab_groups"}
+    {current: "current_organism", control: "organism", label:"Organisms",  results: [], apiPath: "organisms",},
+    {current: "current_organism_part", control: "organism_part", label:"Organism Parts",  results: [], apiPath: "organism_parts"},
+    {current: "current_cell_type", control: "cell_type", label:  "Cell Types", results: [], apiPath: "cell_types"},
+    {current: "current_tissue_type", control: "tissue_type", label: "Tissue Types", results: [], apiPath: "tissue_types",},
+    {current: "current_disease", control: "disease", label: "Diseases", results: [], apiPath: "diseases",},
+    {current: "current_instrument", control: "instrument", label: "Instruments", results: [], apiPath: "instruments",},
+    {current: "current_quantification_method", control: "quantification_method", label: "Quantification Methods", results: [], apiPath: "quantification_methods"},
+    {current: "current_experiment_type", control: "experiment_type", label: "Experiment Types", results: [], apiPath: "experiment_types"},
+    {current: "current_keyword", control: "keyword", label: "Keywords", results: [], apiPath: "keywords"},
+    {current: "current_associated_authors", control: "associated_authors", label: "Authors", results: [], apiPath: "authors"},
+    {current: "current_lab_group", control: "lab_group", label: "Lab Groups", results: [], apiPath: "lab_groups"}
   ]
   currentControl: any = {}
   modalVisible: boolean = false
@@ -106,8 +106,8 @@ export class ProjectDetailsComponent implements OnInit {
   })
 
   boxPlotControl: any[] = [
-    {current: "current_accession_id", control: "accession_id", label:"Accession IDs",  results: [], apiPath: "/genenamemap", parameterName:  "accession_id"},
-    {current: "current_gene_names", control: "gene_names", label:"Gene Names",  results: [], apiPath: "/genenamemap", parameterName: "gene_names"},
+    {current: "current_accession_id", control: "accession_id", label:"Accession IDs",  results: [], apiPath: "genenamemap", parameterName:  "accession_id"},
+    {current: "current_gene_names", control: "gene_names", label:"Gene Names",  results: [], apiPath: "genenamemap", parameterName: "gene_names"},
     //{current: "current_primary_id", control: "primary_id", label: "Primary IDs", results: [], apiPath: "/raw_data", parameterName: "primary_id"}
   ]
 

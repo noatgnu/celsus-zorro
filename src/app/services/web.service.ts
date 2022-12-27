@@ -56,7 +56,7 @@ export class WebService {
   autoLogin() {
     let headers = new HttpHeaders()
     headers = headers.append("withCredentials", "true")
-    this.http.get(this.host + "/csrf/", {observe: "response", responseType: "text", headers}).subscribe(data => {
+    this.http.get(this.host + "csrf/", {observe: "response", responseType: "text", headers}).subscribe(data => {
 
     })
 
@@ -102,7 +102,7 @@ export class WebService {
     if (offset > 0) {
       params = params.append("offset", `${offset*limit}`)
     }
-    return this.http.get(this.host + "/projects/", {headers, params})
+    return this.http.get(this.host + "projects/", {headers, params})
   }
 
   submitProject(data: any) {
@@ -112,7 +112,7 @@ export class WebService {
     }
     let headers = new HttpHeaders()
     headers = headers.set("Content-Type", "application/json")
-    return this.http.post(this.host + "/projects/", JSON.stringify(payload), {observe: "body", responseType: "json", headers})
+    return this.http.post(this.host + "projects/", JSON.stringify(payload), {observe: "body", responseType: "json", headers})
   }
 
   submitDifferentialAnalysisFile = (file: any) => {
@@ -124,7 +124,7 @@ export class WebService {
     form.append("file_type", fileType)
     form.append("comparisons", "")
     form.append("file", file.file, file.file.name)
-    return this.http.post(this.host + "/files/", form).subscribe(data => {
+    return this.http.post(this.host + "files/", form).subscribe(data => {
       this.uploadedContent[file.file.name] = data
       file.onSuccess(file.file)
     }, error => {
@@ -135,14 +135,14 @@ export class WebService {
   getFileColumns(fileId: number) {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
-    return this.http.get(this.host + "/files/" + fileId + "/get_columns/", {responseType: "json", observe: "body", headers})
+    return this.http.get(this.host + "files/" + fileId + "/get_columns/", {responseType: "json", observe: "body", headers})
   }
 
   setFileToProject(projectId: number, fileId: number) {
     let headers = new HttpHeaders()
     headers = headers.set("Content-Type", "application/json")
     const payload = {project_id: projectId, file_id: fileId}
-    return this.http.post(this.host + "/projects/" + projectId + "/set_file/", JSON.stringify(payload), {observe: "body", responseType: "json", headers})
+    return this.http.post(this.host + "projects/" + projectId + "/set_file/", JSON.stringify(payload), {observe: "body", responseType: "json", headers})
   }
 
   submitDAColumns(fileId: number, data: any, comparisons: any, projectId: any){
@@ -156,7 +156,7 @@ export class WebService {
     }
     let headers = new HttpHeaders()
     headers = headers.set("Content-Type", "application/json")
-    return this.http.post(this.host + "/files/" + fileId + "/add_differential_analysis_data/", JSON.stringify(payload), {responseType: "json", observe: "body", headers})
+    return this.http.post(this.host + "files/" + fileId + "/add_differential_analysis_data/", JSON.stringify(payload), {responseType: "json", observe: "body", headers})
   }
 
   submitRawColumns(fileId: number, data: any, projectId: any) {
@@ -170,13 +170,13 @@ export class WebService {
     }
     let headers = new HttpHeaders()
     headers = headers.set("Content-Type", "application/json")
-    return this.http.post(this.host + "/files/" + fileId + "/add_raw_data/", JSON.stringify(payload), {responseType: "json", observe: "body", headers})
+    return this.http.post(this.host + "files/" + fileId + "/add_raw_data/", JSON.stringify(payload), {responseType: "json", observe: "body", headers})
   }
 
   createComparison(data: any) {
     let headers = new HttpHeaders()
     headers = headers.set("Content-Type", "application/json")
-    return this.http.post(this.host + "/comparisons/", JSON.stringify(data), {responseType: "json", observe: "body", headers})
+    return this.http.post(this.host + "comparisons/", JSON.stringify(data), {responseType: "json", observe: "body", headers})
   }
 
   submitOther = (fileList: any[]): Observable<any> => {
@@ -195,13 +195,13 @@ export class WebService {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
     let params = new HttpParams().append("expand", "default_settings")
-    return this.http.get(this.host + "/projects/" + projectId + "/", {responseType: "json", observe: "body", headers, params})
+    return this.http.get(this.host + "projects/" + projectId + "/", {responseType: "json", observe: "body", headers, params})
   }
 
   getDifferentialAnalysisData(comparisonId: any = [], count: number = 20, ids: string[] = [], offset: number = 0,) {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
-    let path = "/differential_data/"
+    let path = "differential_data/"
     let params = new HttpParams()
       .append("limit", `${count}`)
     if (offset > 0) {
@@ -262,7 +262,7 @@ export class WebService {
     if (fcCutoff != 0) {
       params = params.append("fc_cutoff", `${fcCutoff}`)
     }
-    return this.http.get(this.host + "/differential_data/", {responseType: "json", observe: "body", headers, params})
+    return this.http.get(this.host + "differential_data/", {responseType: "json", observe: "body", headers, params})
   }
 
   getRawDataFromGeneNames(query: string, offset: number = 0, limit: number = 20, exact: boolean = false, file_id: string[] = [], primaryId: boolean = false, ptmData: boolean = false) {
@@ -293,7 +293,7 @@ export class WebService {
     if (ptmData) {
       params = params.append("ptm_data", `${ptmData}`)
     }
-    return this.http.get(this.host + "/raw_data/", {responseType: "json", observe: "body", headers, params})
+    return this.http.get(this.host + "raw_data/", {responseType: "json", observe: "body", headers, params})
   }
 
   getRawDataFromAccessionId(query: string, offset: number = 0, limit: number = 20, exact: boolean = false, file_id: string[] = [], primaryId: boolean = false) {
@@ -320,7 +320,7 @@ export class WebService {
     if (file_id.length > 0) {
       params = params.append("file_id", file_id.join(","))
     }
-    return this.http.get(this.host + "/raw_data/", {responseType: "json", observe: "body", headers, params})
+    return this.http.get(this.host + "raw_data/", {responseType: "json", observe: "body", headers, params})
   }
 
   getData(url: string, pageIndex:  number, pageSize: number, sortField: string | null, sortOrder: string | null, filter: Array<{ key: string; value: string[] }>): Observable<any> {
@@ -333,13 +333,13 @@ export class WebService {
     for (const k of filter) {
       params = params.append(k.key, k.value.join(","))
     }
-    return this.http.get(this.host + "/" + url, {params})
+    return this.http.get(this.host + url, {params})
   }
 
   getUniprotRecord(queryId: any) {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
-    return this.http.get(this.host + "/uniprot_record/" + queryId + "/", {responseType: "json", observe: "body", headers})
+    return this.http.get(this.host + "uniprot_record/" + queryId + "/", {responseType: "json", observe: "body", headers})
   }
 
   getUniprotSingle(accessionId: string) {
@@ -353,13 +353,13 @@ export class WebService {
     let params = new HttpParams().append("expand", "file.project")
 
     headers = headers.set("Accept", "application/json")
-    return this.http.get(this.host + "/comparisons/" + comparisonId + "/", {responseType: "json", observe: "body", headers})
+    return this.http.get(this.host + "comparisons/" + comparisonId + "/", {responseType: "json", observe: "body", headers})
   }
 
   getProjectFromFile(fileId: number) {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
-    return this.http.get(this.host + "/files/" + fileId + "/get_project/", {responseType: "json", observe: "body", headers})
+    return this.http.get(this.host + "files/" + fileId + "/get_project/", {responseType: "json", observe: "body", headers})
   }
 
   updateProject(projectId: number, key: string, value: any) {
@@ -367,31 +367,31 @@ export class WebService {
     headers = headers.set("Content-Type", "application/json")
     const payload: any = {}
     payload[key] = value
-    return this.http.patch(this.host + "/projects/" + projectId + "/", payload, {responseType: "json", observe: "body", headers})
+    return this.http.patch(this.host + "projects/" + projectId + "/", payload, {responseType: "json", observe: "body", headers})
   }
 
   deleteFile(id: number) {
-    return this.http.delete(this.host + "/files/" + id +"/", {observe: "response"})
+    return this.http.delete(this.host + "files/" + id +"/", {observe: "response"})
   }
 
   getBoxplotParameters(id: number) {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
-    return this.http.get(this.host + "/raw_sample_column/" + id + "/get_boxplot_parameters/", {responseType: "json", observe: "body", headers})
+    return this.http.get(this.host + "raw_sample_column/" + id + "/get_boxplot_parameters/", {responseType: "json", observe: "body", headers})
   }
 
   getOverview() {
     let headers = new HttpHeaders()
     headers = headers.set("Accept", "application/json")
-    return this.http.get(this.host + "/overview/", {responseType: "json", observe: "body", headers})
+    return this.http.get(this.host + "overview/", {responseType: "json", observe: "body", headers})
   }
 
   refreshUniprot() {
-    return this.http.post(this.host + "/genemap-refresh/", {})
+    return this.http.post(this.host + "genemap-refresh/", {})
   }
 
   getUserData() {
-    return this.http.post(this.host + "/user/", {})
+    return this.http.post(this.host + "user/", {})
   }
 
   getProjectCountData(apiPath: string, includeProjectCount: boolean = false) {
