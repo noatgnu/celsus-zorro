@@ -3,12 +3,13 @@ import {HttpClient, HttpHeaders, HttpParams, HttpXsrfTokenExtractor} from "@angu
 import {forkJoin, Observable, Subscription} from "rxjs";
 import {AccountsService} from "../pages/accounts/accounts.service";
 import {exp} from "@amcharts/amcharts5/.internal/core/util/Ease";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebService {
-  host = "http://127.0.0.1:8000"
+  host = environment.apiURL
   currentFileType: string = "DA"
   keyMap: any = {
     "organisms": "organism",
