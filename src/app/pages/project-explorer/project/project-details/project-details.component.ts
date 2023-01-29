@@ -345,6 +345,8 @@ export class ProjectDetailsComponent implements OnInit {
 
   clearBoxplotLineChart() {
     this.boxPlotLineChart = []
+    this.selectedBoxplot = {}
+    console.log(this.selectedBoxplot)
   }
 
   getBoxplotValue(control: string, obj: any) {
@@ -361,6 +363,7 @@ export class ProjectDetailsComponent implements OnInit {
                 this.boxPlotLineChart.push(d)
               })
               this.boxPlotLineChart = [...this.boxPlotLineChart]
+              console.log(this.boxPlotLineChart)
             }
           )
           break

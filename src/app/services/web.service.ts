@@ -405,4 +405,12 @@ export class WebService {
     headers = headers.set("Accept", "application/json")
     return this.http.get(this.host + apiPath, {responseType: "json", observe: "body", headers, params})
   }
+
+  checkJob(job_id: string) {
+    let params: HttpParams = new HttpParams()
+    params = params.append("id", job_id)
+    let headers = new HttpHeaders()
+    headers = headers.set("Accept", "application/json")
+    return this.http.get(this.host + "check_job/", {responseType: "json", observe: "body", headers, params})
+  }
 }

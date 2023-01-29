@@ -39,6 +39,7 @@ export class UploadDifferentialAnalysisComponent implements OnInit {
   })
 
   comparisons: any = {}
+  checkTimeout: NodeJS.Timeout|undefined
   constructor(private web: WebService, private fb: FormBuilder, private data: DataService) {
     this.form.controls["foldChange"].valueChanges.subscribe(data => {
       data.forEach((d:any) => {
@@ -82,14 +83,58 @@ export class UploadDifferentialAnalysisComponent implements OnInit {
           }
         }
         if (this.projectData.id !== undefined) {
-          this.web.submitDAColumns(this.fileId, this.form.value, this.comparisons, this.projectData.id).pipe(tap(_ => this.loading = true)).subscribe(data => {
-            this.loading = false
-            this.complete.emit(true)
+          this.web.submitDAColumns(this.fileId, this.form.value, this.comparisons, this.projectData.id).pipe(tap(_ => this.loading = true)).subscribe((data:any) => {
+
+            this.checkTimeout = setInterval(()=> {
+              this.web.checkJob(data["job_id"]).subscribe((job_status:any) => {
+                switch (job_status.status) {
+                  case "completed":
+                    this.complete.emit(true)
+                    this.loading = false
+                    clearInterval(this.checkTimeout)
+                    break
+                  case "failed":
+                    console.log(`${data["job_id"]} failed`)
+                    break
+                  case "progressing":
+                    console.log(`${data["job_id"]} in progress`)
+                    break
+                }
+                if (job_status) {
+                  job_status.status
+                }
+              }, error => {
+                console.log(error)
+              })
+            }, 10000)
+
+            //this.complete.emit(true)
           })
         } else {
-          this.web.submitDAColumns(this.fileId, this.form.value, this.comparisons, this.data.submittedProject.id).pipe(tap(_ => this.loading = true)).subscribe(data => {
-            this.loading = false
-            this.complete.emit(true)
+          this.web.submitDAColumns(this.fileId, this.form.value, this.comparisons, this.data.submittedProject.id).pipe(tap(_ => this.loading = true)).subscribe((data: any) => {
+            this.checkTimeout = setInterval(()=> {
+              this.web.checkJob(data["job_id"]).subscribe((job_status:any) => {
+                switch (job_status.status) {
+                  case "completed":
+                    this.complete.emit(true)
+                    this.loading = false
+                    clearInterval(this.checkTimeout)
+                    break
+                  case "failed":
+                    console.log(`${data["job_id"]} failed`)
+                    break
+                  case "progressing":
+                    console.log(`${data["job_id"]} in progress`)
+                    break
+                }
+                if (job_status) {
+                  job_status.status
+                }
+              }, error => {
+                console.log(error)
+              })
+            }, 10000)
+            //this.complete.emit(true)
           })
         }
 
@@ -108,5 +153,11 @@ export class UploadDifferentialAnalysisComponent implements OnInit {
   setComparisonName(e: any, p: string) {
     this.comparisons[p].comparison = e
     console.log(this.comparisons)
+  }
+
+  ngOnDestroy() {
+    if (this.checkTimeout) {
+      clearInterval(this.checkTimeout)
+    }
   }
 }

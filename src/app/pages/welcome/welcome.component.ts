@@ -13,16 +13,16 @@ export class WelcomeComponent implements OnInit {
   organismData: any[] = []
 
   dataType: any[] = [
-    {"apiPath": "/keywords/", "label": "Keywords", "title": 'Project distribution per keyword', "divName": 'projectDitributionPerKeyword', "results": []},
-    {"apiPath": "/organism_parts/", "label": "Organism Parts", "title": 'Project distribution per organism part', "divName": 'projectDitributionPerOrganismPart', "results": []},
-    {"apiPath": "/cell_types/", "label": "Cell Types", "title": 'Project distribution per cell types', "divName": 'projectDitributionPerCellType', "results": []},
-    {"apiPath": "/organisms/", "label": "Organisms", "title": 'Project distribution per organism', "divName": 'projectDitributionPerOrganism', "results": []},
-    {"apiPath": "/tissue_types/", "label": "Tissue Types", "title": 'Project distrbution per tissue type', "divName": 'projectDitributionPerTissueType', "results": []},
-    {"apiPath": "/experiment_types/", "label": "Experiment Types", "title": 'Project distribution per experiment type', "divName": 'projectDitributionPerExperimentType', "results": []},
-    {"apiPath": "/quantification_methods/", "label": "Quantification Methods", "title": 'Project distribution per quantification method', "divName": 'projectDitributionPerQuantificationMethod', "results": []},
-    {"apiPath": "/instruments/", "label": "Instruments", "title": 'Project distribution per instrument', "divName": 'projectDitributionPerInstrument', "results": []},
-    {"apiPath": "/diseases/", "label": "Diseases", "title": 'Project distribution per disease', "divName": 'projectDitributionPerDisease', "results": []},
-    {"apiPath": "/lab_groups/", "label": "Lab Groups", "title": 'Project distribution per experiment type', "divName": 'projectDitributionPerLabGroup', "results": []},
+    {"apiPath": "keywords/", "label": "Keywords", "title": 'Project distribution per keyword', "divName": 'projectDitributionPerKeyword', "results": []},
+    {"apiPath": "organism_parts/", "label": "Organism Parts", "title": 'Project distribution per organism part', "divName": 'projectDitributionPerOrganismPart', "results": []},
+    {"apiPath": "cell_types/", "label": "Cell Types", "title": 'Project distribution per cell types', "divName": 'projectDitributionPerCellType', "results": []},
+    {"apiPath": "organisms/", "label": "Organisms", "title": 'Project distribution per organism', "divName": 'projectDitributionPerOrganism', "results": []},
+    {"apiPath": "tissue_types/", "label": "Tissue Types", "title": 'Project distrbution per tissue type', "divName": 'projectDitributionPerTissueType', "results": []},
+    {"apiPath": "experiment_types/", "label": "Experiment Types", "title": 'Project distribution per experiment type', "divName": 'projectDitributionPerExperimentType', "results": []},
+    {"apiPath": "quantification_methods/", "label": "Quantification Methods", "title": 'Project distribution per quantification method', "divName": 'projectDitributionPerQuantificationMethod', "results": []},
+    {"apiPath": "instruments/", "label": "Instruments", "title": 'Project distribution per instrument', "divName": 'projectDitributionPerInstrument', "results": []},
+    {"apiPath": "diseases/", "label": "Diseases", "title": 'Project distribution per disease', "divName": 'projectDitributionPerDisease', "results": []},
+    {"apiPath": "lab_groups/", "label": "Lab Groups", "title": 'Project distribution per experiment type', "divName": 'projectDitributionPerLabGroup', "results": []},
   ]
 
   form = this.fb.group({
@@ -55,7 +55,7 @@ export class WelcomeComponent implements OnInit {
         }
       }
     })
-    this.form.controls["apiSelection"].setValue(["/organisms/"])
+    this.form.controls["apiSelection"].setValue(["organisms/"])
   }
 
   ngOnInit() {

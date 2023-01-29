@@ -45,6 +45,8 @@ export class BoxplotComponent implements OnInit, AfterViewInit, OnDestroy {
   private _lineChartData: any = {}
 
   @Input() set lineChartData(value: any[]) {
+    this.lineChartColor = []
+    this._lineChartData = {}
     if (value.length > 0) {
       for (const i of value) {
         i["sample"] = i["raw_sample_column"]["name"]
@@ -66,7 +68,7 @@ export class BoxplotComponent implements OnInit, AfterViewInit, OnDestroy {
       this.lineChartColor = []
       this._lineChartData = {}
     }
-
+    console.log(this._lineChartData)
     this.updatePlot()
   }
 
@@ -219,6 +221,7 @@ export class BoxplotComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.lineChartColor.length > 0) {
 
         for (const l of this.lineChartColor) {
+          console.log(lineChartData[l])
           let lineSeries = chart.series.push(am5xy.LineSeries.new(root,{
             name: l,
             xAxis: xAxis,
@@ -246,6 +249,7 @@ export class BoxplotComponent implements OnInit, AfterViewInit, OnDestroy {
             })
           })
           lineSeries.appear(1000)
+
         }
       }
 
