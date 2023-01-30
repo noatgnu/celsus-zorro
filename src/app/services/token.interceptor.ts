@@ -33,7 +33,9 @@ export class TokenInterceptor implements HttpInterceptor {
             }),
             catchError((err) => {
               this.isRefreshing = false
+              console.log(err)
               this.accounts.logout().subscribe(data => {
+                console.log(err)
                 console.log("logged out")
               })
               return throwError(err)
@@ -115,6 +117,7 @@ export class TokenInterceptor implements HttpInterceptor {
           }),
           catchError((err) => {
             this.isRefreshing = false
+            console.log(err)
             this.accounts.logout().subscribe()
             return throwError(err)
           })
